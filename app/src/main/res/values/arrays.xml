@@ -1,2 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string-array name="spanish_week_string_array">
+
+    <item>D</item>
+    <item>L</item>
+    <item>M</item>
+    <item>X</item>
+    <item>J</item>
+    <item>V</item>
+    <item>S</item>
+
+    </string-array>
+</resources>

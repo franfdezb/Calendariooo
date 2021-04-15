@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.text.TextUtils;
+import android.widget.TextView;
 
 import com.haibin.calendarview.Calendar;
 import com.haibin.calendarview.MonthView;
@@ -12,7 +13,6 @@ import com.haibin.calendarview.MonthView;
 import java.util.List;
 
 public class CustomMonthView extends MonthView {
-
     private Paint mPointPaint = new Paint();
 
     private int mRadius;
@@ -105,6 +105,5 @@ public class CustomMonthView extends MonthView {
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (dpValue * scale + 0.5f);
     }
-
 }
 
