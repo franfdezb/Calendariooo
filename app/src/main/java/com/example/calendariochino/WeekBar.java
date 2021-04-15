@@ -9,7 +9,7 @@ public class WeekBar extends com.haibin.calendarview.WeekBar {
     public WeekBar(Context context) {
         super(context);
         LayoutInflater.from(context).inflate(R.layout.solar_week_bar, this, true);
-        setBackgroundColor(context.getResources().getColor(R.color.solar_background));
+        setBackgroundColor(context.getResources().getColor(R.color.dark_red));
     }
 
     /**

@@ -1,9 +1,9 @@
 package com.example.calendariochino;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -13,9 +13,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.haibin.calendarview.Calendar;
 import com.haibin.calendarview.CalendarLayout;
 import com.haibin.calendarview.CalendarView;
@@ -30,9 +31,17 @@ public class Calendario extends MainActivity implements
 
     TextView mTextMonthDay;
 
+    TextView mTextEvents;
+
+    EditText mAddEvent;
+
+
+
     TextView mTextYear;
 
     TextView mTextLunar;
+
+    Map<String, Calendar> map = new HashMap<>();
 
     TextView mTextCurrentDay;
 
@@ -41,6 +50,13 @@ public class Calendario extends MainActivity implements
     RelativeLayout mRelativeTool;
     private int mYear;
     CalendarLayout mCalendarLayout;
+
+    private int selectedDay;
+    private int selectedYear;
+    private int selectedMonth;
+
+    ImageView mAddbtn;
+
 
 
 
@@ -58,22 +74,24 @@ public class Calendario extends MainActivity implements
         mRelativeTool = findViewById(R.id.rl_tool);
         mCalendarView = findViewById(R.id.calendarView);
         mTextCurrentDay = findViewById(R.id.tv_current_day);
+        mTextEvents = findViewById(R.id.tv_events);
+        mAddEvent = findViewById(R.id.txtEvent);
+        mAddbtn = findViewById(R.id.add_btn);
+
+
+
         mTextMonthDay.setOnClickListener(v -> {
             if (!mCalendarLayout.isExpand()) {
                 mCalendarLayout.expand();
                 return;
             }
             mCalendarView.showYearSelectLayout(mYear);
+            mTextEvents.setVisibility(View.GONE);
             mTextLunar.setVisibility(View.GONE);
             mTextYear.setVisibility(View.GONE);
             mTextMonthDay.setText(String.valueOf(mYear));
         });
-        findViewById(R.id.fl_current).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mCalendarView.scrollToCurrent();
-            }
-        });
+        findViewById(R.id.fl_current).setOnClickListener(v -> mCalendarView.scrollToCurrent());
         mCalendarLayout = findViewById(R.id.calendarLayout);
         mCalendarView.setOnCalendarSelectListener(this);
         mCalendarView.setOnYearChangeListener(this);
@@ -82,6 +100,8 @@ public class Calendario extends MainActivity implements
         mTextMonthDay.setText(mCalendarView.getCurDay() + " / " + mCalendarView.getCurMonth());
         //mTextLunar.setText("今日");
         mTextCurrentDay.setText(String.valueOf(mCalendarView.getCurDay()));
+
+
     }
 
     @Override
@@ -89,33 +109,43 @@ public class Calendario extends MainActivity implements
         int year = mCalendarView.getCurYear();
         int month = mCalendarView.getCurMonth();
 
-        Map<String, Calendar> map = new HashMap<>();
-        map.put(getSchemeCalendar(year, month, 3, "假").toString(),
-                getSchemeCalendar(year, month, 3, "假"));
-        map.put(getSchemeCalendar(year, month, 6, "事").toString(),
-                getSchemeCalendar(year, month, 6, "事"));
-        map.put(getSchemeCalendar(year, month, 9, "议").toString(),
-                getSchemeCalendar(year, month, 9, "议"));
-        map.put(getSchemeCalendar(year, month, 13, "记").toString(),
-                getSchemeCalendar(year, month, 13, "记"));
-        map.put(getSchemeCalendar(year, month, 14, "记").toString(),
-                getSchemeCalendar(year, month, 14, "记"));
-        map.put(getSchemeCalendar(year, month, 15, "假").toString(),
-                getSchemeCalendar(year, month, 15, "假"));
-        map.put(getSchemeCalendar(year, month, 18, "记").toString(),
-                getSchemeCalendar(year, month, 18, "记"));
-        map.put(getSchemeCalendar(year, month, 25, "假").toString(),
-                getSchemeCalendar(year, month, 25, "假"));
-        map.put(getSchemeCalendar(year, month, 27, "多").toString(),
-                getSchemeCalendar(year, month, 27, "多"));
-        //此方法在巨大的数据量上不影响遍历性能，推荐使用
+
+        map.put(getSchemeCalendar(year, month, 3, "Dentista").toString(),
+                getSchemeCalendar(year, month, 3, "Dentista"));
+        map.put(getSchemeCalendar(year, month, 6, "Suspenso time").toString(),
+                getSchemeCalendar(year, month, 6, "Suspenso time"));
+        map.put(getSchemeCalendar(year, month, 9, "Vacuna").toString(),
+                getSchemeCalendar(year, month, 9, "Vacuna"));
         mCalendarView.setSchemeDate(map);
+
+
+
+    }
+
+
+
+    public void addEvent(View v){
+
+
+        int year = selectedYear;
+        int month = selectedMonth;
+        int day = selectedDay;
+
+        mAddEvent.setVisibility(View.VISIBLE);
+        mTextEvents.setText("");
+        map.put((getSchemeCalendar(year, month, day, mAddEvent.getText().toString())).toString(),
+                getSchemeCalendar(year, month, day, mAddEvent.getText().toString()));
+        mCalendarView.setSchemeDate(map);
+        mTextEvents.setVisibility(View.VISIBLE);
+
+
 
     }
 
 
     @Override
     public void onClick(View v) {
+
 
     }
 
@@ -141,12 +171,23 @@ public class Calendario extends MainActivity implements
 
     @Override
     public void onCalendarSelect(Calendar calendar, boolean isClick) {
+        selectedDay = calendar.getDay();
+        selectedYear = calendar.getYear();
+        selectedMonth = calendar.getMonth();
+        mAddEvent.setVisibility(View.GONE);
         mTextLunar.setVisibility(View.VISIBLE);
         mTextYear.setVisibility(View.VISIBLE);
+        mTextEvents.setVisibility(View.VISIBLE);
+        mTextEvents.setText(calendar.getDay() + "/" + calendar.getMonth() + ": " + calendar.getScheme());
         mTextMonthDay.setText(calendar.getDay()+ " / " +calendar.getMonth());
         mTextYear.setText(String.valueOf(calendar.getYear()));
         //mTextLunar.setText(calendar.getLunar());
         mYear = calendar.getYear();
+
+        if(calendar.getScheme() == null || calendar.getScheme().isEmpty())
+            mTextEvents.setText(calendar.getDay() + "/" + calendar.getMonth() + ": Sin eventos programados");
+
+
     }
 
     @Override
