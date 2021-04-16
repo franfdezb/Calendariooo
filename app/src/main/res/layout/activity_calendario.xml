@@ -121,6 +121,7 @@
             app:week_bar_view="com.example.calendariochino.WeekBar"
             app:week_text_color="#FFFFFF"
             app:week_view="com.example.calendariochino.CustomWeekView"
+            app:year_view="com.example.calendariochino.CustomYearView"
             app:year_view_day_text_color="#333333"
             app:year_view_day_text_size="9sp"
             app:year_view_month_text_color="#A81E1E"
@@ -151,27 +152,65 @@
                     android:id="@+id/txtEvent"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
+                    android:layout_marginBottom="50dp"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:hint="Descripción"
+                    android:textStyle="italic"
+                    android:hint="Nombre del evento"
                     android:textAlignment="center"
+                    android:background="@drawable/bg_evento"
                     android:visibility="gone"/>
 
             </LinearLayout>
 
             <ImageButton
                 android:id="@+id/add_btn"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:layout_alignRight="@+id/tv_events"
                 android:layout_alignBottom="@+id/tv_events"
                 android:layout_marginRight="25dp"
                 android:layout_marginBottom="25dp"
                 android:contentDescription="@string/app_name"
                 android:scaleType="centerInside"
+                android:background="#A81E1E"
                 android:onClick="addEvent"
+                android:src="@drawable/ic_add_event"
+                app:tint="#000000" />
+
+            <ImageButton
+                android:id="@+id/ok_btn"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_alignRight="@+id/tv_events"
+                android:layout_alignBottom="@+id/tv_events"
+                android:layout_marginRight="25dp"
+                android:layout_marginBottom="25dp"
+                android:contentDescription="@string/app_name"
+                android:scaleType="centerInside"
+                android:background="#A81E1E"
+                android:onClick="okEvent"
+                android:visibility="gone"
                 android:src="@drawable/ic_add"
                 app:tint="#000000" />
+
+            <ImageButton
+                android:id="@+id/close_btn"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_alignLeft="@+id/tv_events"
+                android:layout_alignBottom="@+id/tv_events"
+                android:layout_marginLeft="25dp"
+                android:layout_marginBottom="25dp"
+                android:contentDescription="@string/app_name"
+                android:scaleType="centerInside"
+                android:onClick="closeEvent"
+                android:src="@drawable/ic_close"
+                android:background="#A81E1E"
+                app:tint="#000000"
+                android:visibility="gone"/>
 
 
 
