@@ -146,7 +146,8 @@
             <LinearLayout
                 android:id="@+id/ll_event_add"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
                 <EditText
                     android:id="@+id/txtEvent"
@@ -155,10 +156,43 @@
                     android:layout_marginLeft="30dp"
                     android:layout_marginRight="30dp"
                     android:layout_marginBottom="50dp"
+                    android:layout_marginTop="50dp"
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:textStyle="italic"
                     android:hint="Nombre del evento"
+                    android:textAlignment="center"
+                    android:background="@drawable/bg_evento"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/txtTime1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="150dp"
+                    android:layout_marginRight="150dp"
+                    android:layout_marginBottom="50dp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:textStyle="italic"
+                    android:hint="Desde"
+                    android:textAlignment="center"
+                    android:onClick="from"
+                    android:background="@drawable/bg_evento"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/txtTime2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="150dp"
+                    android:layout_marginRight="150dp"
+                    android:layout_marginBottom="50dp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:textStyle="italic"
+                    android:hint="Hasta"
+                    android:onClick="till"
                     android:textAlignment="center"
                     android:background="@drawable/bg_evento"
                     android:visibility="gone"/>
@@ -177,7 +211,22 @@
                 android:scaleType="centerInside"
                 android:background="#A81E1E"
                 android:onClick="addEvent"
-                android:src="@drawable/ic_add_event"
+                android:src="@drawable/evento_add"
+                app:tint="#000000" />
+
+            <ImageButton
+                android:id="@+id/delete_btn"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_alignLeft="@+id/tv_events"
+                android:layout_alignBottom="@+id/tv_events"
+                android:layout_marginLeft="25dp"
+                android:layout_marginBottom="25dp"
+                android:contentDescription="@string/app_name"
+                android:scaleType="centerInside"
+                android:background="#A81E1E"
+                android:onClick="deleteEvent"
+                android:src="@drawable/event_delete"
                 app:tint="#000000" />
 
             <ImageButton

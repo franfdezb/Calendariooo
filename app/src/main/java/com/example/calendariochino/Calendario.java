@@ -1,5 +1,10 @@
 package com.example.calendariochino;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Build;
 import android.view.View;
@@ -7,6 +12,8 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.TimePicker;
+
 import com.haibin.calendarview.Calendar;
 import com.haibin.calendarview.CalendarLayout;
 import com.haibin.calendarview.CalendarView;
@@ -21,6 +28,10 @@ public class Calendario extends MainActivity implements
 
     Map<String, Calendar> map = new HashMap<>();
 
+    private mySQLiteDBHandler dbHandler;
+
+    private SQLiteDatabase sqLiteDatabase;
+
     TextView mTextMonthDay;
 
     TextView mTextEvents;
@@ -31,6 +42,10 @@ public class Calendario extends MainActivity implements
 
     TextView mTextCurrentDay;
 
+    TextView mTimeFrom;
+
+    TextView mTimeTill;
+
     EditText mAddEvent;
 
     ImageButton mClose;
@@ -39,11 +54,17 @@ public class Calendario extends MainActivity implements
 
     ImageButton mAddEventBtn;
 
+    ImageButton mDeleteEventBtn;
+
     CalendarView mCalendarView;
 
     RelativeLayout mRelativeTool;
 
     CalendarLayout mCalendarLayout;
+
+    private String desde;
+
+    private String hasta;
 
     private int mYear;
 
@@ -59,7 +80,9 @@ public class Calendario extends MainActivity implements
         if (Build.VERSION.SDK_INT >= 21) {
             getWindow().setStatusBarColor(getResources().getColor(R.color.solar_background));
         }
+
         setContentView(R.layout.activity_calendario);
+
         mTextMonthDay = findViewById(R.id.tv_month_day);
         mTextYear = findViewById(R.id.tv_year);
         mTextLunar = findViewById(R.id.tv_lunar);
@@ -71,6 +94,9 @@ public class Calendario extends MainActivity implements
         mClose = findViewById(R.id.close_btn);
         mOk = findViewById(R.id.ok_btn);
         mAddEventBtn = findViewById(R.id.add_btn);
+        mDeleteEventBtn = findViewById(R.id.delete_btn);
+        mTimeFrom = findViewById(R.id.txtTime1);
+        mTimeTill = findViewById(R.id.txtTime2);
 
         mTextMonthDay.setOnClickListener(v -> {
             if (!mCalendarLayout.isExpand()) {
@@ -93,25 +119,46 @@ public class Calendario extends MainActivity implements
         mYear = mCalendarView.getCurYear();
         mTextMonthDay.setText(mCalendarView.getCurDay() + " / " + mCalendarView.getCurMonth());
         mTextCurrentDay.setText(String.valueOf(mCalendarView.getCurDay()));
+        onCalendarSelect(mCalendarView.getSelectedCalendar(), true);
+
+        try{
+
+            dbHandler = new mySQLiteDBHandler(this, "EventsDB", null,1);
+            sqLiteDatabase = dbHandler.getWritableDatabase();
+            sqLiteDatabase.execSQL("CREATE TABLE EventCalendar(ID INTEGER PRIMARY KEY, Dia TEXT, Mes TEXT, Año TEXT, Evento TEXT, Desde TEXT, Hasta TEXT)");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
 
     }
 
     @Override
     protected void initData() {
 
-        int year = mCalendarView.getCurYear();
-        int month = mCalendarView.getCurMonth();
 
-        map.put(getSchemeCalendar(year, month, 3, "Dentista").toString(),
-                getSchemeCalendar(year, month, 3, "Dentista"));
-        map.put(getSchemeCalendar(year, month, 6, "Suspenso time").toString(),
-                getSchemeCalendar(year, month, 6, "Suspenso time"));
-        map.put(getSchemeCalendar(year, month, 9, "Vacuna").toString(),
-                getSchemeCalendar(year, month, 9, "Vacuna"));
 
-        mCalendarView.setSchemeDate(map);
 
-    }
+        Cursor  cursor = sqLiteDatabase.rawQuery("select * from EventCalendar",null);
+
+
+        if (cursor.moveToFirst()) {
+            while (!cursor.isAfterLast()) {
+                String name = cursor.getString(cursor.getColumnIndex("Evento"));
+                int day = cursor.getInt(cursor.getColumnIndex("Dia"));
+                int month =cursor.getInt(cursor.getColumnIndex("Mes"));
+                int year =cursor.getInt(cursor.getColumnIndex("Año"));
+
+                map.put((getSchemeCalendar(year, month, day, name)).toString(),
+                        getSchemeCalendar(year, month, day, name));
+                cursor.moveToNext();
+            }
+        }
+
+            mCalendarView.setSchemeDate(map);
+
+        }
 
 
 
@@ -122,11 +169,20 @@ public class Calendario extends MainActivity implements
         mAddEventBtn.setVisibility(View.VISIBLE);
         mAddEvent.setText("");
         mAddEvent.setVisibility(View.GONE);
+        mDeleteEventBtn.setVisibility(View.VISIBLE);
+        onCalendarSelect(mCalendarView.getSelectedCalendar(), true);
+        mTimeTill.setVisibility(View.GONE);
+        mTimeFrom.setVisibility(View.GONE);
+        mTimeTill.setText("");
+        mTimeFrom.setText("");
 
     }
 
     public void addEvent(View v){
 
+        mDeleteEventBtn.setVisibility(View.GONE);
+        mTimeTill.setVisibility(View.VISIBLE);
+        mTimeFrom.setVisibility(View.VISIBLE);
         mClose.setVisibility(View.VISIBLE);
         mAddEvent.setVisibility(View.VISIBLE);
         mAddEventBtn.setVisibility(View.GONE);
@@ -134,7 +190,83 @@ public class Calendario extends MainActivity implements
         mTextEvents.setText("");
         mTextEvents.setVisibility(View.VISIBLE);
 
+
     }
+
+    java.util.Calendar c = java.util.Calendar.getInstance();
+
+
+    public void from(View v) {
+
+        int hour = c.get(java.util.Calendar.HOUR);
+        int minute = c.get(java.util.Calendar.HOUR);
+
+        TimePickerDialog timePickerDialog = new TimePickerDialog(Calendario.this,
+                (view, hourOfDay, minuteOfDay) -> {
+
+                    String hourString;
+                    if (hourOfDay < 10)
+                        hourString = "0" + hourOfDay;
+                    else
+                        hourString = "" +hourOfDay;
+
+                    String minuteSting;
+                    if (minute < 10)
+                        minuteSting = "0" + minute;
+                    else
+                        minuteSting = "" +minute;
+
+                    mTimeFrom.setText(hourString + ":" + minuteSting);
+
+
+
+                }, hour, minute, false);
+        timePickerDialog.show();
+    }
+
+
+    public void till(View v){
+
+        int hour = c.get(java.util.Calendar.HOUR);
+        int minute = c.get(java.util.Calendar.HOUR);
+
+        TimePickerDialog timePickerDialog = new TimePickerDialog(Calendario.this,
+                (view, hourOfDay, minuteOfDay) -> {
+
+                    String hourString;
+                    if (hourOfDay < 10)
+                        hourString = "0" + hourOfDay;
+                    else
+                        hourString = "" +hourOfDay;
+
+                    String minuteSting;
+                    if (minute < 10)
+                        minuteSting = "0" + minute;
+                    else
+                        minuteSting = "" +minute;
+
+                    mTimeTill.setText(hourString + ":" + minuteSting);
+                }, hour, minute, false);
+        timePickerDialog.show();
+
+    }
+
+    public void deleteEvent(View v){
+
+        int year = selectedYear;
+        int month = selectedMonth;
+        int day = selectedDay;
+        String txt;
+
+        txt = mTextEvents.getText().toString();
+
+        mCalendarView.removeSchemeDate(getSchemeCalendar(year, month, day, txt));
+
+        onCalendarSelect(mCalendarView.getSelectedCalendar(), true);
+
+            sqLiteDatabase.rawQuery("DELETE FROM EventCalendar WHERE Dia = " +selectedDay+ " AND  Mes = " +selectedMonth+ " AND Año = "+selectedYear , null);
+
+       }
 
 
     public void okEvent(View v){
@@ -142,6 +274,7 @@ public class Calendario extends MainActivity implements
         int year = selectedYear;
         int month = selectedMonth;
         int day = selectedDay;
+        String selectedDate = selectedDay + "/" + selectedMonth + "/" + selectedYear;
         String txt;
 
         if(mAddEvent.getText().toString().isEmpty())
@@ -153,11 +286,26 @@ public class Calendario extends MainActivity implements
                 getSchemeCalendar(year, month, day, txt));
         mCalendarView.setSchemeDate(map);
 
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("Dia", selectedDay);
+        contentValues.put("Mes", selectedMonth);
+        contentValues.put("Año", selectedYear);
+        contentValues.put("Evento", txt);
+        contentValues.put("Desde", mTimeFrom.getText().toString());
+        contentValues.put("Hasta", mTimeTill.getText().toString());
+        sqLiteDatabase.insert("EventCalendar", null, contentValues);
+
         mOk.setVisibility(View.GONE);
         mClose.setVisibility(View.GONE);
         mAddEvent.setVisibility(View.GONE);
         mAddEventBtn.setVisibility(View.VISIBLE);
+        mDeleteEventBtn.setVisibility(View.VISIBLE);
+        onCalendarSelect(mCalendarView.getSelectedCalendar(), true);
         mAddEvent.setText("");
+        mTimeTill.setVisibility(View.GONE);
+        mTimeFrom.setVisibility(View.GONE);
+        mTimeTill.setText("");
+        mTimeFrom.setText("");
 
     }
 
@@ -197,7 +345,10 @@ public class Calendario extends MainActivity implements
         mClose.setVisibility(View.GONE);
         mAddEventBtn.setVisibility(View.VISIBLE);
         mAddEvent.setText("");
-
+        mTimeTill.setVisibility(View.GONE);
+        mTimeFrom.setVisibility(View.GONE);
+        mTimeTill.setText("");
+        mTimeFrom.setText("");
         selectedDay = calendar.getDay();
         selectedYear = calendar.getYear();
         selectedMonth = calendar.getMonth();
@@ -205,13 +356,59 @@ public class Calendario extends MainActivity implements
         mTextLunar.setVisibility(View.VISIBLE);
         mTextYear.setVisibility(View.VISIBLE);
         mTextEvents.setVisibility(View.VISIBLE);
-        mTextEvents.setText(calendar.getDay() + "/" + calendar.getMonth() + ": " + calendar.getScheme());
+        mDeleteEventBtn.setVisibility(View.VISIBLE);
+
+        try {
+
+            String selectQuery = "SELECT Desde FROM EventCalendar WHERE Dia = "+ selectedDay +" AND Mes ="+ selectedMonth +" AND Año = "+ selectedYear;
+
+            Cursor cursor = sqLiteDatabase.rawQuery(selectQuery, null);
+
+            if (cursor.moveToFirst()) {
+                do {
+                    desde = cursor.getString(0);
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+
+        try {
+
+            String selectQuery = "SELECT Hasta FROM EventCalendar WHERE Dia = "+ selectedDay +" AND Mes ="+ selectedMonth +" AND Año = "+ selectedYear;
+
+            Cursor cursor = sqLiteDatabase.rawQuery(selectQuery, null);
+
+            if (cursor.moveToFirst()) {
+                do {
+                    hasta = cursor.getString(0);
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+
+        if((desde == null || desde.isEmpty()) && (hasta == null || hasta.isEmpty()))
+            mTextEvents.setText(calendar.getScheme() + "\n Todo el día");
+
+        else if((desde == null || desde.isEmpty()) && !hasta.isEmpty())
+            mTextEvents.setText(calendar.getScheme() + "\n  ? - " +hasta+"");
+        else if(!desde.isEmpty() && (hasta.isEmpty() || hasta == null))
+            mTextEvents.setText(calendar.getScheme() + "\n " + desde + " -  ?");
+        else
+        mTextEvents.setText(calendar.getScheme() + "\n " + desde + " - " +hasta+"");
+
+
         mTextMonthDay.setText(calendar.getDay()+ " / " +calendar.getMonth());
         mTextYear.setText(String.valueOf(calendar.getYear()));
         mYear = calendar.getYear();
 
         if(calendar.getScheme() == null || calendar.getScheme().isEmpty())
-            mTextEvents.setText(calendar.getDay() + "/" + calendar.getMonth() + ": Sin eventos programados");
+            mTextEvents.setText("Sin eventos programados");
     }
 
     @Override
