@@ -33,47 +33,27 @@ public class Calendario extends MainActivity implements
     private SQLiteDatabase sqLiteDatabase;
 
     TextView mTextMonthDay;
-
     TextView mTextEvents;
-
     TextView mTextYear;
-
     TextView mTextLunar;
-
     TextView mTextCurrentDay;
-
     TextView mTimeFrom;
-
     TextView mTimeTill;
-
     EditText mAddEvent;
-
     ImageButton mClose;
-
     ImageButton mOk;
-
     ImageButton mAddEventBtn;
-
     ImageButton mDeleteEventBtn;
-
     CalendarView mCalendarView;
-
     RelativeLayout mRelativeTool;
-
     CalendarLayout mCalendarLayout;
 
     private String desde;
-
     private String hasta;
-
     private int mYear;
-
     private int selectedDay;
-
     private int selectedYear;
-
     private int selectedMonth;
-
 
     @Override
     protected void initView() {
@@ -137,11 +117,7 @@ public class Calendario extends MainActivity implements
     @Override
     protected void initData() {
 
-
-
-
         Cursor  cursor = sqLiteDatabase.rawQuery("select * from EventCalendar",null);
-
 
         if (cursor.moveToFirst()) {
             while (!cursor.isAfterLast()) {
@@ -199,26 +175,12 @@ public class Calendario extends MainActivity implements
     public void from(View v) {
 
         int hour = c.get(java.util.Calendar.HOUR);
-        int minute = c.get(java.util.Calendar.HOUR);
+        int minute = c.get(java.util.Calendar.MINUTE);
 
         TimePickerDialog timePickerDialog = new TimePickerDialog(Calendario.this,
                 (view, hourOfDay, minuteOfDay) -> {
 
-                    String hourString;
-                    if (hourOfDay < 10)
-                        hourString = "0" + hourOfDay;
-                    else
-                        hourString = "" +hourOfDay;
-
-                    String minuteSting;
-                    if (minute < 10)
-                        minuteSting = "0" + minute;
-                    else
-                        minuteSting = "" +minute;
-
-                    mTimeFrom.setText(hourString + ":" + minuteSting);
-
-
+                    mTimeFrom.setText(hourOfDay + ":" + minuteOfDay);
 
                 }, hour, minute, false);
         timePickerDialog.show();
@@ -228,24 +190,13 @@ public class Calendario extends MainActivity implements
     public void till(View v){
 
         int hour = c.get(java.util.Calendar.HOUR);
-        int minute = c.get(java.util.Calendar.HOUR);
+        int minute = c.get(java.util.Calendar.MINUTE);
 
         TimePickerDialog timePickerDialog = new TimePickerDialog(Calendario.this,
                 (view, hourOfDay, minuteOfDay) -> {
 
-                    String hourString;
-                    if (hourOfDay < 10)
-                        hourString = "0" + hourOfDay;
-                    else
-                        hourString = "" +hourOfDay;
+                    mTimeTill.setText(hourOfDay + ":" + minuteOfDay);
 
-                    String minuteSting;
-                    if (minute < 10)
-                        minuteSting = "0" + minute;
-                    else
-                        minuteSting = "" +minute;
-
-                    mTimeTill.setText(hourString + ":" + minuteSting);
                 }, hour, minute, false);
         timePickerDialog.show();
 
@@ -262,9 +213,12 @@ public class Calendario extends MainActivity implements
 
         mCalendarView.removeSchemeDate(getSchemeCalendar(year, month, day, txt));
 
-        onCalendarSelect(mCalendarView.getSelectedCalendar(), true);
 
-            sqLiteDatabase.rawQuery("DELETE FROM EventCalendar WHERE Dia = " +selectedDay+ " AND  Mes = " +selectedMonth+ " AND Año = "+selectedYear , null);
+        //sqLiteDatabase.rawQuery("DELETE FROM EventCalendar WHERE Dia = " + selectedDay + " AND  Mes = " + selectedMonth + " AND Año = "+ selectedYear , null);
+
+        sqLiteDatabase.delete("EventCalendar","Dia = " +selectedDay+ " AND Mes = " +selectedMonth+ " AND Año = " +selectedYear , null);
+
+        onCalendarSelect(mCalendarView.getSelectedCalendar(), true);
 
        }
 
@@ -274,7 +228,6 @@ public class Calendario extends MainActivity implements
         int year = selectedYear;
         int month = selectedMonth;
         int day = selectedDay;
-        String selectedDate = selectedDay + "/" + selectedMonth + "/" + selectedYear;
         String txt;
 
         if(mAddEvent.getText().toString().isEmpty())
