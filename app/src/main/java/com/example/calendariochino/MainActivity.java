@@ -38,4 +38,14 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void weather (View view){
+
+        Intent myIntent;
+
+        myIntent = new Intent(view.getContext(), Weather.class);
+
+        startActivity(myIntent);
+
+    }
+
 }

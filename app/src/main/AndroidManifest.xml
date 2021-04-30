@@ -10,6 +10,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CalendarioChino">
+        <activity
+            android:name=".Weather"
+            android:label="@string/title_activity_weather"
+            android:theme="@style/Theme.CalendarioChino.NoActionBar"></activity>
         <activity android:name=".Calendario" />
         <activity android:name=".MainActivity">
             <intent-filter>
