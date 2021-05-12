@@ -48,4 +48,14 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void Chronometer (View view){
+
+        Intent myIntent;
+
+        myIntent = new Intent(view.getContext(), Chronometer.class);
+
+        startActivity(myIntent);
+
+    }
+
 }
