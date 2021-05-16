@@ -58,4 +58,14 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void MapsActivity (View view){
+
+        Intent myIntent;
+
+        myIntent = new Intent(view.getContext(), MapsActivity.class);
+
+        startActivity(myIntent);
+
+    }
+
 }

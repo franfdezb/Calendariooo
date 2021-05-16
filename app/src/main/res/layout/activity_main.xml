@@ -43,5 +43,13 @@
         android:onClick="Chronometer"
         />
 
+    <Button
+        android:id="@+id/btnMaps"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Mapa"
+        android:onClick="MapsActivity"
+        />
+
 
 </LinearLayout>
