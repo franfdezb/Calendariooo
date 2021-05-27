@@ -47,4 +47,28 @@ public class MainActivity extends AppCompatActivity {
         startActivity(myIntent);
 
     }
+<<<<<<< HEAD
+=======
+
+    public void Chronometer (View view){
+
+        Intent myIntent;
+
+        myIntent = new Intent(view.getContext(), Chronometer.class);
+
+        startActivity(myIntent);
+
+    }
+
+    public void MapsActivity (View view){
+
+        Intent myIntent;
+
+        myIntent = new Intent(view.getContext(), MapsActivity.class);
+
+        startActivity(myIntent);
+
+    }
+
+>>>>>>> b94b3d8f1a09970edb672e448850ec1fde67ac7e
 }

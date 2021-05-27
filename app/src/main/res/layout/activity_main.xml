@@ -35,6 +35,22 @@
         android:onClick="weather"
         />
 
+    <Button
+        android:id="@+id/btnChronometer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cronómetro"
+        android:onClick="Chronometer"
+        />
+
+    <Button
+        android:id="@+id/btnMaps"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Mapa"
+        android:onClick="MapsActivity"
+        />
+
 
 
 
