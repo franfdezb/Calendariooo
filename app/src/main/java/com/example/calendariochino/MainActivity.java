@@ -77,6 +77,16 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void Lantern (View view){
+
+        Intent myIntent;
+
+        myIntent = new Intent(view.getContext(), Lantern.class);
+
+        startActivity(myIntent);
+
+    }
+
 
 
 }

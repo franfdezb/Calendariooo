@@ -3,6 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.calendariochino">
 
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-feature android:name="android.hardware.camera"/>
+
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
@@ -34,6 +37,11 @@
 
         <activity
             android:name=".MapsActivity"
+            android:theme="@style/Theme.CalendarioChino.NoActionBar">
+
+        </activity>
+        <activity
+            android:name=".Lantern"
             android:theme="@style/Theme.CalendarioChino.NoActionBar">
 
         </activity>
