@@ -1,6 +1,7 @@
 package com.example.calendariochino;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,11 +18,19 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.new_activity_main);
+        //setContentView(R.layout.activity_main);
+
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
 
         initView();
         initData();
@@ -47,8 +56,6 @@ public class MainActivity extends AppCompatActivity {
         startActivity(myIntent);
 
     }
-<<<<<<< HEAD
-=======
 
     public void Chronometer (View view){
 
@@ -70,5 +77,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
->>>>>>> b94b3d8f1a09970edb672e448850ec1fde67ac7e
+
+
 }

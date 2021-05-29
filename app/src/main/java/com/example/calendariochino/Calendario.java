@@ -7,12 +7,17 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Build;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
+
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.haibin.calendarview.Calendar;
 import com.haibin.calendarview.CalendarLayout;
@@ -31,7 +36,6 @@ public class Calendario extends MainActivity implements
     private mySQLiteDBHandler dbHandler;
 
     private SQLiteDatabase sqLiteDatabase;
-
     TextView mTextMonthDay;
     TextView mTextEvents;
     TextView mTextYear;
@@ -61,7 +65,12 @@ public class Calendario extends MainActivity implements
             getWindow().setStatusBarColor(getResources().getColor(R.color.solar_background));
         }
 
-        setContentView(R.layout.activity_calendario);
+        setContentView(R.layout.new_activity_calendario);
+
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
 
         mTextMonthDay = findViewById(R.id.tv_month_day);
         mTextYear = findViewById(R.id.tv_year);

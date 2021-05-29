@@ -26,4 +26,6 @@
         <item>Noviembre</item>
         <item>Diciembre</item>
     </string-array>
+    <string-array name="menu_back_colors" />
+    <string-array name="menus" />
 </resources>

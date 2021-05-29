@@ -3,16 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.calendariochino">
 
-<<<<<<< HEAD
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
-=======
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
          location permissions for the "MyLocation" functionality.
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
->>>>>>> b94b3d8f1a09970edb672e448850ec1fde67ac7e
+
 
     <application
         android:allowBackup="true"
@@ -36,14 +34,21 @@
 
         <activity
             android:name=".MapsActivity"
-            android:label="@string/title_activity_maps"></activity>
-        <activity android:name=".Chronometer" />
+            android:theme="@style/Theme.CalendarioChino.NoActionBar">
+
+        </activity>
+        <activity android:name=".Chronometer"
+            android:theme="@style/Theme.CalendarioChino.NoActionBar"
+            />
         <activity
             android:name=".Weather"
-            android:label="@string/title_activity_weather"
             android:theme="@style/Theme.CalendarioChino.NoActionBar" />
-        <activity android:name=".Calendario" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".Calendario"
+            android:theme="@style/Theme.CalendarioChino.NoActionBar"/>
+        <activity android:name=".MainActivity"
+            android:theme="@style/Theme.CalendarioChino.NoActionBar"
+            android:src="@drawable/ic_close"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
