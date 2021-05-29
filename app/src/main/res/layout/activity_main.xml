@@ -51,5 +51,13 @@
         android:onClick="MapsActivity"
         />
 
+    <Button
+        android:id="@+id/btnLinterna"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Linterna"
+        android:onClick="Linterna"
+        />
+
 
 </LinearLayout>

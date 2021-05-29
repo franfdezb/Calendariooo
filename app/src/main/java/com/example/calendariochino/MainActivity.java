@@ -68,4 +68,14 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void Linterna (View view){
+
+        Intent myIntent;
+
+        myIntent = new Intent(view.getContext(), Linterna.class);
+
+        startActivity(myIntent);
+
+    }
+
 }
