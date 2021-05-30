@@ -51,7 +51,7 @@ public class Lantern extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    cameraManager.setTorchMode(cameraID, true);
+                    cameraManager.setTorchMode(cameraID, false);
                     switchOn.setVisibility(View.GONE);
                     switchOff.setVisibility(View.VISIBLE);
                 } catch (Exception e){
