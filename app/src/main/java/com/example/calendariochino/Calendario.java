@@ -285,7 +285,10 @@ public class Calendario extends MainActivity implements
         calendar.setMonth(month);
         calendar.setDay(day);
         calendar.setSchemeColor(Color.WHITE);
-        calendar.setScheme(text)
+        calendar.setScheme(text);
+        calendar.addScheme(0xFFa8b015, "rightTop");
+        calendar.addScheme(0xFF423cb0, "leftTop");
+        calendar.addScheme(0xFF643c8c, "bottom");
 
         return calendar;
     }
@@ -351,6 +354,10 @@ public class Calendario extends MainActivity implements
 
         }
 
+        mTextMonthDay.setText(calendar.getDay()+ " / " +calendar.getMonth());
+        mTextYear.setText(String.valueOf(calendar.getYear()));
+        mYear = calendar.getYear();
+
         if((desde == null || desde.isEmpty()) && (hasta == null || hasta.isEmpty()))
             mTextEvents.setText(calendar.getScheme() + "\n Todo el día");
 
@@ -365,9 +372,7 @@ public class Calendario extends MainActivity implements
             mTextEvents.setText("Sin eventos programados");
 
 
-        mTextMonthDay.setText(calendar.getDay()+ " / " +calendar.getMonth());
-        mTextYear.setText(String.valueOf(calendar.getYear()));
-        mYear = calendar.getYear();
+
 
 
     }

@@ -133,15 +133,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/ll_events">
-        <TextView
-            android:id="@+id/tv_events"
-            android:layout_width="match_parent"
-            android:layout_height="800dp"
-            android:gravity="center"
-            android:textAlignment="center"
-            android:textColor="#FFFFFF"
-            android:textSize="20sp"
-            android:textStyle="italic" />
+            <TextView
+                android:id="@+id/tv_events"
+                android:layout_width="match_parent"
+                android:layout_height="800dp"
+                android:gravity="center"
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"
+                android:textStyle="italic" />
 
             <LinearLayout
                 android:id="@+id/ll_event_add"
@@ -155,7 +155,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="30dp"
                     android:layout_marginRight="30dp"
-                    android:layout_marginBottom="50dp"
+                    android:layout_marginBottom="20dp"
                     android:layout_marginTop="50dp"
                     android:layout_gravity="center"
                     android:gravity="center"
@@ -171,7 +171,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="150dp"
                     android:layout_marginRight="150dp"
-                    android:layout_marginBottom="50dp"
+                    android:layout_marginTop="20dp"
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:textStyle="italic"
@@ -187,7 +187,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="150dp"
                     android:layout_marginRight="150dp"
-                    android:layout_marginBottom="30dp"
+                    android:layout_marginTop="20dp"
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:textStyle="italic"
