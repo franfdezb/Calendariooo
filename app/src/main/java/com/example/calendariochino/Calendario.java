@@ -114,7 +114,8 @@ public class Calendario extends MainActivity implements
 
             dbHandler = new mySQLiteDBHandler(this, "EventsDB", null,1);
             sqLiteDatabase = dbHandler.getWritableDatabase();
-            sqLiteDatabase.execSQL("CREATE TABLE EventCalendar(ID INTEGER PRIMARY KEY, Dia TEXT, Mes TEXT, Año TEXT, Evento TEXT, Desde TEXT, Hasta TEXT)");
+            sqLiteDatabase.execSQL("CREATE TABLE EventCalendar(ID INTEGER PRIMARY KEY, Dia TEXT, Mes TEXT" +
+                    ", Año TEXT, Evento TEXT, Desde TEXT, Hasta TEXT)");
         }
         catch (Exception e){
             e.printStackTrace();
@@ -222,10 +223,8 @@ public class Calendario extends MainActivity implements
 
         mCalendarView.removeSchemeDate(getSchemeCalendar(year, month, day, txt));
 
-
-        //sqLiteDatabase.rawQuery("DELETE FROM EventCalendar WHERE Dia = " + selectedDay + " AND  Mes = " + selectedMonth + " AND Año = "+ selectedYear , null);
-
-        sqLiteDatabase.delete("EventCalendar","Dia = " +selectedDay+ " AND Mes = " +selectedMonth+ " AND Año = " +selectedYear , null);
+        sqLiteDatabase.delete("EventCalendar","Dia = " +selectedDay+ " " +
+                "AND Mes = " +selectedMonth+ " AND Año = " +selectedYear , null);
 
         onCalendarSelect(mCalendarView.getSelectedCalendar(), true);
 
@@ -286,10 +285,7 @@ public class Calendario extends MainActivity implements
         calendar.setMonth(month);
         calendar.setDay(day);
         calendar.setSchemeColor(Color.WHITE);
-        calendar.setScheme(text);
-        calendar.addScheme(0xFFa8b015, "rightTop");
-        calendar.addScheme(0xFF423cb0, "leftTop");
-        calendar.addScheme(0xFF643c8c, "bottom");
+        calendar.setScheme(text)
 
         return calendar;
     }
@@ -322,7 +318,8 @@ public class Calendario extends MainActivity implements
 
         try {
 
-            String selectQuery = "SELECT Desde FROM EventCalendar WHERE Dia = "+ selectedDay +" AND Mes ="+ selectedMonth +" AND Año = "+ selectedYear;
+            String selectQuery = "SELECT Desde FROM EventCalendar WHERE Dia = "+ selectedDay +" AND Mes ="+
+                    selectedMonth +" AND Año = "+ selectedYear;
 
             Cursor cursor = sqLiteDatabase.rawQuery(selectQuery, null);
 
@@ -364,13 +361,15 @@ public class Calendario extends MainActivity implements
         else
         mTextEvents.setText(calendar.getScheme() + "\n " + desde + " - " +hasta+"");
 
+        if(calendar.getScheme() == null || calendar.getScheme().isEmpty())
+            mTextEvents.setText("Sin eventos programados");
+
 
         mTextMonthDay.setText(calendar.getDay()+ " / " +calendar.getMonth());
         mTextYear.setText(String.valueOf(calendar.getYear()));
         mYear = calendar.getYear();
 
-        if(calendar.getScheme() == null || calendar.getScheme().isEmpty())
-            mTextEvents.setText("Sin eventos programados");
+
     }
 
     @Override
